@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-dotenv
+pydantic>=2.0
+pydantic-settings
+supabase
+langchain
+langchain-nvidia-ai-endpoints
+faiss-cpu
+pdfplumber
+python-docx
+python-multipart
+psycopg2-binary
+# Testing
+pytest
+httpx
+langchain-text-splitters
