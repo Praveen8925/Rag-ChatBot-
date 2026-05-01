@@ -35,10 +35,48 @@ export function useDeleteSession() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (sessionId: string) => {
-      await api.delete(`/api/sessions/${sessionId}`);
+      try {
+        await api.delete(`/api/sessions/${sessionId}`);
+      } catch (error: any) {
+        if (error.response?.status === 404) {
+          // Session already deleted, treat as success
+          return;
+        }
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sessions'] });
+    },
+    onError: (error: any) => {
+      console.error('Delete session error:', error);
+      const message = error.response?.data?.message || error.message || 'Failed to delete session';
+      throw new Error(message);
+    },
+  });
+}
+
+export function useUpdateSession() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ sessionId, title }: { sessionId: string; title: string }) => {
+      try {
+        const { data } = await api.put(`/api/sessions/${sessionId}`, { title });
+        return data;
+      } catch (error: any) {
+        if (error.response?.status === 404) {
+          throw new Error('Session not found or has been deleted');
+        }
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sessions'] });
+    },
+    onError: (error: any) => {
+      console.error('Update session error:', error);
+      const message = error.response?.data?.message || error.message || 'Failed to update session';
+      throw new Error(message);
     },
   });
 }

@@ -1,3 +1,10 @@
+"""
+Message Service - Handles chat messages.
+FEATURES:
+- Message storage and retrieval
+- Triggers automatic title generation for first messages to "New Chat" sessions
+"""
+
 from uuid import UUID
 from typing import List, Optional
 from core.supabase_client import supabase

@@ -30,7 +30,9 @@ export function useSendMessage() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (request: ChatRequest) => {
-      const { data } = await api.post('/api/chat', request);
+      const { data } = await api.post('/api/chat', request, {
+        responseType: 'stream',
+      });
       return data;
     },
     onSuccess: (data, variables) => {

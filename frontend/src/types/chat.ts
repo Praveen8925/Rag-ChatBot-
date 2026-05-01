@@ -1,9 +1,10 @@
 export interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   sources?: Source[];
-  created_at: string;
+  createdAt: string;
+  status?: "pending" | "streaming" | "complete";
 }
 
 export interface Source {
